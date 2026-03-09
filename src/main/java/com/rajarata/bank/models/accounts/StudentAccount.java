@@ -1,0 +1,7 @@
+﻿package src.main.java.com.rajarata.bank.models.accounts;
+
+public class StudentAccount extends Account {
+    public StudentAccount(String accountNumber, double initialBalance) {
+        super(accountNumber, initialBalance);
+    }
+}
