@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.models.accounts;
+﻿package com.rajarata.bank.models.accounts;
 
 public class FixedDepositAccount extends Account {
     public FixedDepositAccount(String accountNumber, double initialBalance) {

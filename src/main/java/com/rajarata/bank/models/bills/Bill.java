@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.models.bills;
+﻿package com.rajarata.bank.models.bills;
 
 public class Bill {
     private String billId;

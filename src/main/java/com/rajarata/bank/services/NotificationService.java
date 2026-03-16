@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.services;
+﻿package com.rajarata.bank.services;
 
 public class NotificationService {
 }

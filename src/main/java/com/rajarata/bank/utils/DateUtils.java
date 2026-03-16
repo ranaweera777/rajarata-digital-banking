@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.utils;
+﻿package com.rajarata.bank.utils;
 
 import java.time.LocalDateTime;
 

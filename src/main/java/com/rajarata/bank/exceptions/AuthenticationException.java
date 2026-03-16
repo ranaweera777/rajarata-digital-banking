@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.exceptions;
+﻿package com.rajarata.bank.exceptions;
 
 public class AuthenticationException extends RuntimeException {
     public AuthenticationException(String message) {

@@ -1,4 +1,4 @@
-﻿package src.main.java.com.rajarata.bank.models.loans;
+﻿package com.rajarata.bank.models.loans;
 
 public class Loan {
     private String id;
