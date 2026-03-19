@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models;
+package com.rajarata.bank.models;
 
 import java.time.LocalDateTime;
 
@@ -25,14 +25,18 @@ public abstract class User {
     }
 
     public String getName() { return name; }
-        public void setName(String name) {
-            if (name != null && !name.isBlank()) {
-            } this.name = name; }
+    public void setName(String name) {
+        if (name != null && !name.isBlank()) {
+            this.name = name;
+        }
+    }
 
     public String getEmail() { return email; }
-        public void setEmail(String email) {
-            if (email != null && !email.contains("@")) {
-            } this.email = email; }
+    public void setEmail(String email) {
+        if (email != null && email.contains("@")) {
+            this.email = email;
+        }
+    }
 
     public String getPassword() { return password; }
         public void setPassword(String password) { 

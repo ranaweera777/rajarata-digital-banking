@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.utils;
+package com.rajarata.bank.utils;
 
 public class CurrencyConverter {
     public double convert(double amount, double rate) {

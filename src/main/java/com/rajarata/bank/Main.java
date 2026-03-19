@@ -1,4 +1,4 @@
-﻿package  com.rajarata.bank;
+package com.rajarata.bank;
 
 public class Main {
     public static void main(String[] args) {

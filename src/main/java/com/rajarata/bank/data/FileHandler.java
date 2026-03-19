@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.data;
+package com.rajarata.bank.data;
 
 public class FileHandler {
 

@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.accounts;
+package com.rajarata.bank.models.accounts;
 // package com.rajarata.bank.models.accounts;
 
 import java.util.ArrayList;

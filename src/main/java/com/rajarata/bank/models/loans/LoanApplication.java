@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.loans;
+package com.rajarata.bank.models.loans;
 
 public class LoanApplication {
     private String applicationId;

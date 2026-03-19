@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.security;
+package com.rajarata.bank.security;
 
 public class PasswordValidator {
     public boolean isValid(String password) {
