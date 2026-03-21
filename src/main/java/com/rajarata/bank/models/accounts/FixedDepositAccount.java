@@ -41,28 +41,38 @@ public class FixedDepositAccount extends Account {
 
 
 @Override
-public boolean withdraw(double amount){
-    checkMaturity();
+public void withdraw(double amount){
+        checkMaturity();
 
-    if (!isMatured){
-         // early withdrawal with penalty
-         double penalty = getBalance() * (earlyWithdrawalPenaltyRate / 100);
-         double availableAmount = getBalance() - penalty;
+        if (amount <= 0) {
+                throw new IllegalArgumentException("Amount must be positive");
+        }
 
-             System.out.println("EARLY WITHDRAWAL PENALTY: " + penalty + " " + getCurrency());
-            System.out.println("Amount available after penalty: " + availableAmount);
+        if (!isMatured){
+                 // Early withdrawal closes the deposit after applying the penalty.
+                 double penalty = getBalance() * (earlyWithdrawalPenaltyRate / 100);
+                 double availableAmount = getBalance() - penalty;
 
-            if(amount <= availableAmount){
-                 setBalance(0);
-                 setActive(false);
-                 System.out.println("Fixed Deposit closed early. Penalty applied.");
-                 return true;
-            }
-            return false;
+                         System.out.println("EARLY WITHDRAWAL PENALTY: " + penalty + " " + getCurrency());
+                        System.out.println("Amount available after penalty: " + availableAmount);
 
-    }
-      // Matured - withdraw with full interest
-        return super.withdraw(amount);
+                        if(amount <= availableAmount){
+                                 setBalance(0);
+                                 setActive(false);
+                                 System.out.println("Fixed Deposit closed early. Penalty applied.");
+                                 return;
+                        }
+                        throw new IllegalArgumentException("Requested amount exceeds amount available after penalty");
+
+        }
+            // Matured withdrawal closes the deposit with full balance available.
+                if (amount > getBalance()) {
+                        throw new IllegalArgumentException("Insufficient funds");
+                }
+
+                setBalance(0);
+                setActive(false);
+                System.out.println("Fixed Deposit closed after maturity.");
 
 }
 

@@ -14,6 +14,7 @@ public class CheckingAccount extends Account {
     private static final double INTEREST_RATE = 3.0;
     private static final double MINIMUM_BALANCE = 0.0;
     private static final double WITHDRAWAL_LIMIT = 100000.0;
+    private double overdraftLimit;
     private double studentId;
     private String institutionName;
     private boolean overdraftProtection;
