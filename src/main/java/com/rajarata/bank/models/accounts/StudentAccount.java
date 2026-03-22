@@ -2,9 +2,9 @@
 import java.time.LocalDate;
 
 public class StudentAccount extends Account {
-    private static final double INTEREST_RATE = 3.0; // 3% annual interest
-    private static final double MINIMUM_BALANCE = 0;
-    private static final double WITHDRAWAL_LIMIT = 1000000.0;
+    private static final double INTEREST_RATE = 5.0; 
+    private static final double MINIMUM_BALANCE = 1000.0;
+    private static final double WITHDRAWAL_LIMIT =20000.0;
 
     private String studentId;
     private String institutionName;
