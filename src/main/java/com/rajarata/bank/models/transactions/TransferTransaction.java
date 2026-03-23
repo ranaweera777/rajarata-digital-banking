@@ -7,7 +7,7 @@ public abstract class TransferTransaction extends Transaction {
     private Account targetAccount;
 
 
-    public TransferTransaction(String id, LocalDateTime timestamp, double amount, String description, String status) {
+    public TransferTransaction(String id, LocalDateTime timestamp, double amount, String description, String status, Account sourceAccount, Account targetAccount) {
         super(id, timestamp, "TRANSFER", amount, description, status);
         this.sourceAccount = sourceAccount;
         this.targetAccount = targetAccount;
@@ -20,8 +20,20 @@ public abstract class TransferTransaction extends Transaction {
 
   @Override
   public boolean execute(){
-    boolean success = sourceAccount.withdraw(getAmount());
+    try {
+      sourceAccount.withdraw(getAmount());
+      targetAccount.deposit(getAmount());
+      markSuccess();
+      sourceAccount.addTransaction(this);
+      targetAccount.addTransaction(this);
+      return true;
+    } catch (IllegalArgumentException exception) {
+      markFailed();
+      return false;
+    }
   }
+ 
+
     
   
   
@@ -32,3 +44,12 @@ public abstract class TransferTransaction extends Transaction {
 
 
 }
+
+// /Updated execute logic in TransferTransaction.java to remove the invalid assignment from withdraw(...) (which returns void).
+// Rewrote execute() using try/catch:
+// sourceAccount.withdraw(getAmount())
+// targetAccount.deposit(getAmount())
+// return true on success, false on IllegalArgumentException.
+// Added proper transaction state handling with markSuccess() / markFailed().
+// Added transaction logging to both accounts with addTransaction(this) after a successful transfer.
+// Cleaned file encoding by removing UTF-8 BOM from this file to prevent hidden Java parsing issues./
