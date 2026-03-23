@@ -1,8 +1,17 @@
-package com.rajarata.bank.exceptions
-;
+﻿package com.rajarata.bank.exceptions;
+
 
 public class InvalidAccountException extends RuntimeException {
-    public InvalidAccountException(String message) {
+    private String accountNumber;
+
+
+    public InvalidAccountException(String message,String accountNumber) {
         super(message);
+        this.accountNumber = accountNumber;
     }
-}
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    }
+
