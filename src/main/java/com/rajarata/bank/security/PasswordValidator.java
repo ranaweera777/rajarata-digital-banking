@@ -1,7 +1,6 @@
 package com.rajarata.bank.security;
-
 import java.util.regex.Pattern;
-import java.util.regex.pattern;
+// import java.util.regex.pattern;
 
 public class PasswordValidator {
 

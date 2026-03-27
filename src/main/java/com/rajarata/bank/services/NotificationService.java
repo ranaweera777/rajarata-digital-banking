@@ -28,6 +28,8 @@ public class NotificationService {
         customer.sendNotification(message);
     }
 
+    //modify bill and loan class
+
         public void sendLoanInstallmentReminder(Customer customer, Loan loan) {
         String message = String.format(
             "REMINDER: Your loan installment of %.2f is due on %s. " +
@@ -36,6 +38,8 @@ public class NotificationService {
         );
         customer.sendAlert("LOAN_REMINDER", message);
     }
+
+        //modify bill and loan class
 
         public void sendBillPaymentReminder(Customer customer, List<Bill> upcomingBills) {
         for (Bill bill : upcomingBills) {

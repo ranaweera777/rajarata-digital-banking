@@ -57,7 +57,7 @@ public class AuthenticationService {
                 throw new AuthenticationException("User not found: " + username, username, 0);
             }
                    //modify password validator
-                  if (!user.validatePassword(password))  {
+                  if (!PasswordValidator.isStrongPassword(password))  {
             failedAttempts.put(username, attempts + 1);
             throw new AuthenticationException("Invalid password", username, attempts + 1);
         }

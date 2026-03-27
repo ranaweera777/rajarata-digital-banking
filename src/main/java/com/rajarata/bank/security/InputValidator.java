@@ -11,7 +11,7 @@ public class InputValidator {
 
 
 
-    public boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();
     }
 

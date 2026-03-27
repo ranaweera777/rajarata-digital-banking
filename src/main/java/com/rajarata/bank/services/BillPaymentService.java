@@ -37,7 +37,7 @@ public class BillPaymentService {
        scheduledBills.add(bill);
        System.out.println("Bill scheduled for payment: " + bill.getBillId() + " Due: " + bill.getDueDate());
    }
-
+//modify bill class
        public List<Bill> getUpcomingBills() {
         List<Bill> upcoming = new ArrayList<>();
         for (Bill bill : scheduledBills) {
@@ -47,6 +47,8 @@ public class BillPaymentService {
         }
         return upcoming;
     }
+
+//modify bill class
 
         public List<Bill> getOverdueBills() {
         List<Bill> overdue = new ArrayList<>();
