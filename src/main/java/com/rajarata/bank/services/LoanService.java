@@ -28,11 +28,11 @@ public LoanApplication applyForLoan(Customer customer, double amount, int termMo
 public Loan approveLoan(LoanApplication application, double interestRate){
      application.approve();
      Loan loan = new Loan(
-        generateLoanId(),
-            application.getCustomer(),
-            application.getAmount(),
-            interestRate,
-            application.getTermMonths()
+        generateLoanId(), 
+        application.getAmount(),
+        application.getCustomer(),
+        interestRate,
+        application.getTermMonths()
      );
 
      loans.add(loan);
@@ -44,7 +44,7 @@ public Loan approveLoan(LoanApplication application, double interestRate){
      return loan;
 }
 
-public void rejection(LoanApplication application, String reason){
+public void rejectLoan(LoanApplication application, String reason){
     application.reject(reason);
 pendingApplications.remove(application);
         System.out.println("Loan rejected: " + application.getApplicationId() + " Reason: " + reason);
