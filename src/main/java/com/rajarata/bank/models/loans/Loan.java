@@ -59,7 +59,8 @@ public class Loan {
     public boolean makePayment(double amount) {
         if (amount >= monthlyPayment) {
             double interestPortion = remainBalance * interestRate / 100 / 12;
-            remainBalance -= (amount - interestPortion);
+            double principalPortion = amount - interestPortion;
+            remainBalance -= principalPortion;
             paymentHistory.add(new LoanPayment(amount, LocalDate.now()));
             nextDueDate = nextDueDate.plusMonths(1);
 

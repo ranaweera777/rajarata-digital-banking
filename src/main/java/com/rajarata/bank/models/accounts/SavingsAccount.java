@@ -1,6 +1,6 @@
 package com.rajarata.bank.models.accounts;
 
-// Inheritance & Polymorphism
+/** Savings account with higher interest rate and minimum balance requirements. */
 public class SavingsAccount extends Account {
     private static final double INTEREST_RATE = 4.5; // 4.5% annual interest
     private static final double MINIMUM_BALANCE = 500.0;
