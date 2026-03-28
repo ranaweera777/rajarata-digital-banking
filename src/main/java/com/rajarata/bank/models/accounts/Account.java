@@ -50,7 +50,7 @@ public abstract class Account implements Transactable, InterestCalculable {
     }
 
     @Override
-    public void withdraw(double amount) {
+    public boolean withdraw(double amount) {
         validatePositiveAmount(amount);
 
         if (amount > withdrawalLimit) {

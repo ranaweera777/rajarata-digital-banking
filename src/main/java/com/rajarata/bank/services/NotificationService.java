@@ -9,7 +9,7 @@ import java.util.List;
 public class NotificationService {
 
     public void sendLowBalanceAlert(Customer customer, Account account, double threshold){
-         if(accouunt.getBalance() < threshold){
+         if(account.getBalance() < threshold){
             String message = String.format( "LOW BALANCE ALERT: Your %s account (%s) balance is %.2f. " +
                 "Please deposit funds to avoid service interruption.",
                 account.getAccountType(), account.getAccountNumber(), account.getBalance());
