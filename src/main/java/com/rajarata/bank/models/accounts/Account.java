@@ -47,6 +47,7 @@ public abstract class Account implements Transactable, InterestCalculable {
     public boolean deposit(double amount) {
         validatePositiveAmount(amount);
         balance += amount;
+        return true;
     }
 
     @Override
@@ -66,6 +67,7 @@ public abstract class Account implements Transactable, InterestCalculable {
         }
 
         balance -= amount;
+        return true;
     }
 
     @Override

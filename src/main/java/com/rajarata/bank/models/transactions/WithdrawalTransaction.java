@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.transactions;
+package com.rajarata.bank.models.transactions;
 import  com.rajarata.bank.models.accounts.Account;
 
 import java.time.LocalDateTime;
@@ -18,28 +18,16 @@ public abstract class WithdrawalTransaction extends Transaction {
         return "WITHDRAWAL";
     }
 
-    // @Override
-    // public boolean execute(){
-    //     boolean success = sourceAccount.withdraw(getAmount());
-    //     if (success){
-    //         markSuccess();
-    //         sourceAccount.addTransaction(this);
-    //     } else {
-    //         markFailed();
-    //     }
-    //     return success;
-    // }
-@Override
-public boolean execute() {
-    try {
-        sourceAccount.withdraw(getAmount());
-        markSuccess();
-        sourceAccount.addTransaction(this);
-        return true;
-    } catch (IllegalArgumentException e) {
-        markFailed();
-        return false;
+    @Override
+    public boolean execute() {
+        try {
+            sourceAccount.withdraw(getAmount());
+            markSuccess();
+            sourceAccount.addTransaction(this);
+            return true;
+        } catch (IllegalArgumentException e) {
+            markFailed();
+            return false;
+        }
     }
-
-}
 }

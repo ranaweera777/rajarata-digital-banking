@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.accounts;
+package com.rajarata.bank.models.accounts;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -41,7 +41,7 @@ public class FixedDepositAccount extends Account {
 
 
 @Override
-public void withdraw(double amount){
+public boolean withdraw(double amount){
         checkMaturity();
 
         if (amount <= 0) {
@@ -60,7 +60,7 @@ public void withdraw(double amount){
                                  setBalance(0);
                                  setActive(false);
                                  System.out.println("Fixed Deposit closed early. Penalty applied.");
-                                 return;
+                                 return true;
                         }
                         throw new IllegalArgumentException("Requested amount exceeds amount available after penalty");
 
@@ -73,7 +73,7 @@ public void withdraw(double amount){
                 setBalance(0);
                 setActive(false);
                 System.out.println("Fixed Deposit closed after maturity.");
-
+                return true;
 }
 
 private void checkMaturity() {

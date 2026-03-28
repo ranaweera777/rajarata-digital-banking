@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.bills;
+package com.rajarata.bank.models.bills;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

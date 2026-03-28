@@ -1,24 +1,10 @@
-﻿// package com.rajarata.bank.models.accounts;
-
-// public class CheckingAccount extends Account {
-//     public CheckingAccount(String accountNumber, double initialBalance) {
-//         super(accountNumber, initialBalance);
-//     }
-// }
-
 package com.rajarata.bank.models.accounts;
-
-import java.time.LocalDate;
 
 public class CheckingAccount extends Account {
     private static final double INTEREST_RATE = 3.0;
     private static final double MINIMUM_BALANCE = 0.0;
-    private static final double WITHDRAWAL_LIMIT = 100000.0;
     private double overdraftLimit;
-    private double studentId;
-    private String institutionName;
     private boolean overdraftProtection;
-      private LocalDate graduationDate;
 
     public CheckingAccount(String accountId, String accountNumber, 
                            double initialDeposit, String currency, double overdraftLimit) {
@@ -45,16 +31,16 @@ public class CheckingAccount extends Account {
 
     // Override withdraw to support overdraft
     @Override
-    public void withdraw(double amount) {
+    public boolean withdraw(double amount) {
         if (overdraftProtection && (getBalance() + overdraftLimit >= amount)) {
             double newBalance = getBalance() - amount;
             setBalance(newBalance);
             if (newBalance < 0) {
                 System.out.println("WARNING: Account is in overdraft. Balance: " + newBalance);
             }
-            return;
+            return true;
         }
-        super.withdraw(amount);
+        return super.withdraw(amount);
     }
 
     public double getOverdraftLimit() { return overdraftLimit; }
