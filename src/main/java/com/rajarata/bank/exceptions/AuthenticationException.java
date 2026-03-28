@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.exceptions;
+package com.rajarata.bank.exceptions;
 
 public class AuthenticationException extends RuntimeException {
     private String username;

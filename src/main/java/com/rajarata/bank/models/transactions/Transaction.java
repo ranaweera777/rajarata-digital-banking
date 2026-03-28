@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.transactions;
+package com.rajarata.bank.models.transactions;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,8 +17,7 @@ public abstract class Transaction {
         this.type = type;
         this.amount = amount;
         this.description = description;
-        this.status = status; // status can be "PENDING", "SUCCESS", "FAILED"
-        // bug in cosnstructor
+        this.status = status;
     }
 
     // Abstract method - different transaction types implement differently

@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.transactions;
+package com.rajarata.bank.models.transactions;
 
 import com.rajarata.bank.models.accounts.Account;
 import java.time.LocalDateTime;
@@ -43,15 +43,3 @@ public abstract class TransferTransaction extends Transaction {
   }
 
 }
-
-// /Updated execute logic in TransferTransaction.java to remove the invalid
-// assignment from withdraw(...) (which returns void).
-// Rewrote execute() using try/catch:
-// sourceAccount.withdraw(getAmount())
-// targetAccount.deposit(getAmount())
-// return true on success, false on IllegalArgumentException.
-// Added proper transaction state handling with markSuccess() / markFailed().
-// Added transaction logging to both accounts with addTransaction(this) after a
-// successful transfer.
-// Cleaned file encoding by removing UTF-8 BOM from this file to prevent hidden
-// Java parsing issues./

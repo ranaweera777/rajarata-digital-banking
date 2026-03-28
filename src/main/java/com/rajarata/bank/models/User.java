@@ -39,8 +39,9 @@ public abstract class User {
     }
 
     public String getPassword() { return password; }
-        public void setPassword(String password) { 
-     if (password != null && !password.isBlank()) this.password = password; }
+    public void setPassword(String password) {
+        if (password != null && !password.isBlank()) this.password = password;
+    }
 
     public String getId() { return id; }
 

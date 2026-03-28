@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.services;
+package com.rajarata.bank.services;
 
 import com.rajarata.bank.models.Customer;
 import com.rajarata.bank.models.accounts.Account;
@@ -28,9 +28,7 @@ public class NotificationService {
         customer.sendNotification(message);
     }
 
-    //modify bill and loan class
-
-        public void sendLoanInstallmentReminder(Customer customer, Loan loan) {
+    public void sendLoanInstallmentReminder(Customer customer, Loan loan) {
         String message = String.format(
             "REMINDER: Your loan installment of %.2f is due on %s. " +
             "Please ensure sufficient balance in your account.",
@@ -39,9 +37,7 @@ public class NotificationService {
         customer.sendAlert("LOAN_REMINDER", message);
     }
 
-        //modify bill and loan class
-
-        public void sendBillPaymentReminder(Customer customer, List<Bill> upcomingBills) {
+    public void sendBillPaymentReminder(Customer customer, List<Bill> upcomingBills) {
         for (Bill bill : upcomingBills) {
             String message = String.format(
                 "BILL REMINDER: Your %s bill of %.2f is due on %s (%d days remaining).",
