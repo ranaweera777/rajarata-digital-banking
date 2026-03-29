@@ -18,7 +18,7 @@ public abstract class Transaction {
         this.amount = amount;
         this.description = description;
         this.status = status; // status can be "PENDING", "SUCCESS", "FAILED"
-        // bug in cosnstructor
+
     }
 
     // Abstract method - different transaction types implement differently

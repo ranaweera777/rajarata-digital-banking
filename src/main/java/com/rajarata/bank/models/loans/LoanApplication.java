@@ -2,7 +2,7 @@
 
 import com.rajarata.bank.models.Customer;
 import java.time.LocalDate;
-import java.time.LocalDateTime;;
+import java.time.LocalDateTime;
 
 public class LoanApplication {
     private String applicationId;

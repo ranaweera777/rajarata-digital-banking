@@ -24,7 +24,7 @@ public LoanApplication applyForLoan(Customer customer, double amount, int termMo
     );
     return application;
 }
-//modify loan and loan application classes
+
 public Loan approveLoan(LoanApplication application, double interestRate){
      application.approve();
      Loan loan = new Loan(
@@ -38,7 +38,6 @@ public Loan approveLoan(LoanApplication application, double interestRate){
      loans.add(loan);
      pendingApplications.remove(application);
      
-//modify loan and loan application classes
      loan.generateRepaymentSchedule();
      System.out.println("Loan approved: " + loan.getLoanId());
      return loan;

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Loan {
-    private String LoanId;
+    private String loanId;
     private Customer customer;
-    private double principleAmount;
+    private double principalAmount;
     private double interestRate;
-    private int termMonts;
+    private int  termMonths;
     private double monthlyPayment;
     private double remainBalance;
     private LocalDate startDate;
@@ -19,13 +19,13 @@ public class Loan {
     private List<LoanPayment> paymentHistory;
     private List<RepaymentScheduleEntry> repaymentSchedule;
 
-    public Loan(String loanId, double principleAmount, Customer customer, double interestRate, int termMonths) {
-        this.LoanId = loanId;
-        this.principleAmount = principleAmount;
+    public Loan(String loanId, double principalAmount, Customer customer, double interestRate, int termMonths) {
+        this.loanId = loanId;
+        this.principalAmount = principalAmount;
         this.customer = customer;
         this.interestRate = interestRate;
-        this.termMonts = termMonths;
-        this.remainBalance = principleAmount;
+        this.termMonths = termMonths;
+        this.remainBalance = principalAmount;
         this.startDate = LocalDate.now();
         this.status = "ACTIVE";
         this.paymentHistory = new ArrayList<>();
@@ -36,16 +36,16 @@ public class Loan {
 
     private void calculateMonthlyPayment() {
         double monthlyRate = interestRate / 100 / 12;
-        this.monthlyPayment = (principleAmount * monthlyRate * Math.pow(1 + monthlyRate, termMonts))
-                / (Math.pow(1 + monthlyRate, termMonts) - 1);
+        this.monthlyPayment = (principalAmount * monthlyRate * Math.pow(1 + monthlyRate, termMonths))
+                / (Math.pow(1 + monthlyRate, termMonths) - 1);
     }
 
     public void generateRepaymentSchedule() {
-        double balance = principleAmount;
+        double balance = principalAmount;
         double monthlyRate = interestRate / 100 / 12;
         LocalDate dueDate = startDate.plusMonths(1);
 
-        for (int month = 1; month <= termMonts; month++) {
+        for (int month = 1; month <= termMonths; month++) {
             double interestPayment = balance * monthlyRate;
             double principalPayment = monthlyPayment - interestPayment;
             balance -= principalPayment;
@@ -75,7 +75,7 @@ public class Loan {
     }
 
     public String getLoanId() {
-        return LoanId;
+        return loanId;
     }
 
     public Customer getCustomer() {
@@ -83,7 +83,7 @@ public class Loan {
     }
 
     public double getPrincipalAmount() {
-        return principleAmount;
+        return principalAmount;
     }
 
     public double getInterestRate() {

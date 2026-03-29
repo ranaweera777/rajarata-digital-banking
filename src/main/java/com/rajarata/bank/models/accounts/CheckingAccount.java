@@ -45,16 +45,16 @@ public class CheckingAccount extends Account {
 
     // Override withdraw to support overdraft
     @Override
-    public void withdraw(double amount) {
+    public boolean withdraw(double amount) {
         if (overdraftProtection && (getBalance() + overdraftLimit >= amount)) {
             double newBalance = getBalance() - amount;
             setBalance(newBalance);
             if (newBalance < 0) {
                 System.out.println("WARNING: Account is in overdraft. Balance: " + newBalance);
             }
-            return;
+            return true;
         }
-        super.withdraw(amount);
+        return super.withdraw(amount);
     }
 
     public double getOverdraftLimit() { return overdraftLimit; }
