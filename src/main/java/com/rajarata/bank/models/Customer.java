@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models;
+package com.rajarata.bank.models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

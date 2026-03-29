@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.services;
+package com.rajarata.bank.services;
 
 import com.rajarata.bank.models.accounts.Account;
 import com.rajarata.bank.models.bills.Bill;

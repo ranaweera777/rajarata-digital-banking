@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.interfaces;
+package com.rajarata.bank.interfaces;
 
 public interface Transactable {
     boolean deposit(double amount);

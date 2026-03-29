@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.loans;
+package com.rajarata.bank.models.loans;
 
 import com.rajarata.bank.models.Customer;
 import java.time.LocalDate;
