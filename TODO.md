@@ -17,6 +17,8 @@
 - [x] Remove commented-out code blocks and stale TODO comments
 - [x] Fix formatting issues in `User.java`
 - [x] Remove unused imports in `BillPaymentService`
+- [x] Make the application runnable — expand `Main.java` with a full demo (accounts, deposits, withdrawals, transfers, loans, bills, notifications)
+- [x] Add `exec-maven-plugin` and `maven-jar-plugin` to `pom.xml` — run with `mvn exec:java`
 
 ## 🔲 Remaining — Critical
 
