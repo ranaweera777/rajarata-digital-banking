@@ -1,8 +1,8 @@
-﻿package com.rajarata.bank.models.loans;
+package com.rajarata.bank.models.loans;
 
 import com.rajarata.bank.models.Customer;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 public class LoanApplication {
     private String applicationId;

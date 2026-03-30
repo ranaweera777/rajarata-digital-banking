@@ -27,6 +27,8 @@ public class Loan {
         this.termMonths = termMonths;
         this.remainBalance = principalAmount;
         this.startDate = LocalDate.now();
+        // Solution: initialize nextDueDate when creating the loan to avoid null date errors during payments.
+        this.nextDueDate = this.startDate.plusMonths(1);
         this.status = "ACTIVE";
         this.paymentHistory = new ArrayList<>();
         this.repaymentSchedule = new ArrayList<>();
@@ -61,6 +63,9 @@ public class Loan {
         if (amount >= monthlyPayment) {
             remainBalance -= (amount - (remainBalance * interestRate / 100 / 12));
             paymentHistory.add(new LoanPayment(amount, LocalDate.now()));
+            if (nextDueDate == null) {
+                nextDueDate = LocalDate.now().plusMonths(1);
+            }
             nextDueDate = nextDueDate.plusMonths(1);
 
             if (remainBalance <= 0) {

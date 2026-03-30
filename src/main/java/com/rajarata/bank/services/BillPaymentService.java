@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.services;
+package com.rajarata.bank.services;
 
 import com.rajarata.bank.models.accounts.Account;
 import com.rajarata.bank.models.bills.Bill;
@@ -16,13 +16,13 @@ public class BillPaymentService {
        this.scheduledBills = new ArrayList<>();
        this.transactionService = transactionService;
    }
-   // did not implement bill class yet
+ 
    public boolean payBill(Account sourceAccount, Bill bill){
       if(sourceAccount.getBalance() < bill.getAmount()){
             System.out.println("Insufficient funds to pay bill: " + bill.getBillId());
             return false;
       }
-      //modify bill class
+     
       boolean success = sourceAccount.withdraw(bill.getAmount());
       if(success){
         bill.markAsPaid();
@@ -37,7 +37,7 @@ public class BillPaymentService {
        scheduledBills.add(bill);
        System.out.println("Bill scheduled for payment: " + bill.getBillId() + " Due: " + bill.getDueDate());
    }
-//modify bill class
+
        public List<Bill> getUpcomingBills() {
         List<Bill> upcoming = new ArrayList<>();
         for (Bill bill : scheduledBills) {
@@ -48,7 +48,7 @@ public class BillPaymentService {
         return upcoming;
     }
 
-//modify bill class
+
 
         public List<Bill> getOverdueBills() {
         List<Bill> overdue = new ArrayList<>();

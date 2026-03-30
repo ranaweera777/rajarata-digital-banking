@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.services;
+package com.rajarata.bank.services;
 
 import com.rajarata.bank.models.Customer;
 import com.rajarata.bank.models.accounts.Account;
@@ -28,7 +28,7 @@ public class NotificationService {
         customer.sendNotification(message);
     }
 
-    //modify bill and loan class
+    
 
         public void sendLoanInstallmentReminder(Customer customer, Loan loan) {
         String message = String.format(
@@ -39,7 +39,7 @@ public class NotificationService {
         customer.sendAlert("LOAN_REMINDER", message);
     }
 
-        //modify bill and loan class
+      
 
         public void sendBillPaymentReminder(Customer customer, List<Bill> upcomingBills) {
         for (Bill bill : upcomingBills) {

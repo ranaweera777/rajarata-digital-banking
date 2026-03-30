@@ -1,4 +1,4 @@
-﻿package com.rajarata.bank.models.transactions;
+package com.rajarata.bank.models.transactions;
 
 import com.rajarata.bank.models.accounts.Account;
 import java.time.LocalDateTime;
