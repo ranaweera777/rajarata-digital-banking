@@ -18,6 +18,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    private static double readDouble(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = scanner.nextLine().trim();
+            try {
+                return Double.parseDouble(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number. Please try again.");
+            }
+        }
+    }
+
+    private static int readInt(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number. Please try again.");
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -82,18 +107,15 @@ public class Main {
         // ─── 4. Deposit / Withdraw / Transfer ───
         System.out.println("\n--- 4. Account Operations ---\n");
 
-        System.out.print("Enter amount to deposit into Savings: ");
-        double depositAmt = Double.parseDouble(scanner.nextLine());
+        double depositAmt = readDouble(scanner, "Enter amount to deposit into Savings: ");
         savings.deposit(depositAmt);
         System.out.printf("Deposited %.2f to savings  -> Balance: %.2f%n", depositAmt, savings.getBalance());
 
-        System.out.print("Enter amount to withdraw from Checking: ");
-        double withdrawAmt = Double.parseDouble(scanner.nextLine());
+        double withdrawAmt = readDouble(scanner, "Enter amount to withdraw from Checking: ");
         checking.withdraw(withdrawAmt);
         System.out.printf("Withdrew %.2f from checking -> Balance: %.2f%n", withdrawAmt, checking.getBalance());
 
-        System.out.print("Enter amount to transfer from Savings to Checking: ");
-        double transferAmt = Double.parseDouble(scanner.nextLine());
+        double transferAmt = readDouble(scanner, "Enter amount to transfer from Savings to Checking: ");
         boolean transferred = savings.transfer(checking, transferAmt);
         System.out.println("Transfer " + (transferred ? "SUCCESS" : "FAILED"));
         System.out.printf("  Savings balance:  %.2f%n", savings.getBalance());
@@ -115,18 +137,15 @@ public class Main {
 
         LoanService loanService = new LoanService();
 
-        System.out.print("Enter loan amount: ");
-        double loanAmount = Double.parseDouble(scanner.nextLine());
-        System.out.print("Enter loan term (months): ");
-        int loanTerm = Integer.parseInt(scanner.nextLine());
+        double loanAmount = readDouble(scanner, "Enter loan amount: ");
+        int loanTerm = readInt(scanner, "Enter loan term (months): ");
         System.out.print("Enter loan purpose: ");
         String loanPurpose = scanner.nextLine();
 
         LoanApplication application = loanService.applyForLoan(customer, loanAmount, loanTerm, loanPurpose);
         System.out.println("Application status: " + application.getStatus());
 
-        System.out.print("Enter interest rate to approve loan (%): ");
-        double interestRate = Double.parseDouble(scanner.nextLine());
+        double interestRate = readDouble(scanner, "Enter interest rate to approve loan (%): ");
         Loan loan = loanService.approveLoan(application, interestRate);
 
         System.out.println("Application status : " + application.getStatus());
@@ -134,8 +153,7 @@ public class Main {
         System.out.println("Loan status        : " + loan.getStatus());
         System.out.println("Next due date      : " + loan.getNextDueDate());
 
-        System.out.print("\nEnter payment amount for loan: ");
-        double paymentAmt = Double.parseDouble(scanner.nextLine());
+        double paymentAmt = readDouble(scanner, "\nEnter payment amount for loan: ");
         boolean paid = loan.makePayment(paymentAmt);
         System.out.println("Payment made: " + (paid ? "SUCCESS" : "FAILED"));
         System.out.printf("Remaining balance: %.2f%n", loan.getRemainingBalance());
@@ -146,10 +164,8 @@ public class Main {
         TransactionService txService = new TransactionService();
         BillPaymentService billService = new BillPaymentService(txService);
 
-        System.out.print("Enter due days for electricity bill: ");
-        int electricDueDays = Integer.parseInt(scanner.nextLine());
-        System.out.print("Enter due days for water bill: ");
-        int waterDueDays = Integer.parseInt(scanner.nextLine());
+        int electricDueDays = readInt(scanner, "Enter due days for electricity bill: ");
+        int waterDueDays = readInt(scanner, "Enter due days for water bill: ");
 
         Bill electricBill = new Bill("BILL-001", "ELECTRICITY", "CEB",
                 "ELC-9876", 3500.0, LocalDate.now().plusDays(electricDueDays));
