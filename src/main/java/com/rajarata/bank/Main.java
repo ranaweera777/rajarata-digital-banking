@@ -1,9 +1,12 @@
 package com.rajarata.bank;
 
+import java.time.LocalDate;
+import java.util.Scanner;
+
 import com.rajarata.bank.exceptions.AuthenticationException;
 import com.rajarata.bank.models.Customer;
-import com.rajarata.bank.models.accounts.SavingsAccount;
 import com.rajarata.bank.models.accounts.CheckingAccount;
+import com.rajarata.bank.models.accounts.SavingsAccount;
 import com.rajarata.bank.models.bills.Bill;
 import com.rajarata.bank.models.loans.Loan;
 import com.rajarata.bank.models.loans.LoanApplication;
@@ -12,103 +15,184 @@ import com.rajarata.bank.services.BillPaymentService;
 import com.rajarata.bank.services.LoanService;
 import com.rajarata.bank.services.NotificationService;
 import com.rajarata.bank.services.TransactionService;
-import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        // System.out.println("Rajarata Digital Banking started.");
+                Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Rajarata Digital Banking started.");
         System.out.println("========================================");
         System.out.println("   Rajarata Digital Banking System");
         System.out.println("========================================\n");
+
         // --- 1. User Registration & Authentication ---
         System.out.println("--- 1. User Registration & Login ---\n");
         AuthenticationService authService = new AuthenticationService();
+
+                String userId = prompt(scanner, "Enter user ID", "U001");
+                String username = prompt(scanner, "Enter username", "kamal");
+                String password = prompt(scanner, "Enter password", "Kamal@2024!");
+                String email = prompt(scanner, "Enter email", "kamal@example.com");
+                String phone = prompt(scanner, "Enter phone", "0771234567");
+                String customerId = prompt(scanner, "Enter customer ID", "C001");
+                String address = prompt(scanner, "Enter address", "123 Colombo Road, Anuradhapura");
+
         Customer customer = new Customer(
-                "U001", "kamal", "Kamal@2024!", "kamal@example.com",
-                "0771234567", "C001", "123 Colombo Road, Anuradhapura"
+                                userId, username, password, email,
+                                phone, customerId, address
         );
-        boolean registered = authService.register(customer, "Kamal@2024!");
+                boolean registered = authService.register(customer, password);
         System.out.println("Registration result: " + (registered ? "SUCCESS" : "FAILED"));
+
+                String loginUsername = prompt(scanner, "Login username", username);
+                String loginPassword = prompt(scanner, "Login password", password);
         try {
-            authService.login("kamal", "Kamal@2024!");
+                        authService.login(loginUsername, loginPassword);
             System.out.println("Current user: " + authService.getCurrentUser().getName());
         } catch (AuthenticationException e) {
             System.out.println("Login failed: " + e.getMessage());
         }
+
         // --- 2. Account Operations ---
         System.out.println("\n--- 2. Account Operations ---\n");
-        SavingsAccount savings = new SavingsAccount("A001", "SAV-1001", 10000.0, "LKR");
-        CheckingAccount checking = new CheckingAccount("A002", "CHK-2001", 25000.0, "LKR", 5000.0);
+                String savingsId = prompt(scanner, "Enter savings account ID", "A001");
+                String savingsNumber = prompt(scanner, "Enter savings account number", "SAV-1001");
+                double savingsBalance = promptDouble(scanner, "Enter initial savings balance", 10000.0);
+
+                String checkingId = prompt(scanner, "Enter checking account ID", "A002");
+                String checkingNumber = prompt(scanner, "Enter checking account number", "CHK-2001");
+                double checkingBalance = promptDouble(scanner, "Enter initial checking balance", 25000.0);
+                double overdraftLimit = promptDouble(scanner, "Enter checking overdraft limit", 5000.0);
+
+                SavingsAccount savings = new SavingsAccount(savingsId, savingsNumber, savingsBalance, "LKR");
+                CheckingAccount checking = new CheckingAccount(checkingId, checkingNumber, checkingBalance, "LKR", overdraftLimit);
         customer.addAccount(savings);
         customer.addAccount(checking);
         System.out.println("Savings Account: " + savings.getAccountNumber()
                 + " | Balance: " + savings.getBalance() + " " + savings.getCurrency());
         System.out.println("Checking Account: " + checking.getAccountNumber()
                 + " | Balance: " + checking.getBalance() + " " + checking.getCurrency());
+
         // Deposit
-        savings.deposit(5000);
-        System.out.println("\nDeposited 5000 to savings  -> Balance: " + savings.getBalance());
+                double depositAmount = promptDouble(scanner, "Enter deposit amount to savings", 5000.0);
+                savings.deposit(depositAmount);
+                System.out.println("\nDeposited " + String.format("%.2f", depositAmount) + " to savings  -> Balance: " + String.format("%.2f", savings.getBalance()));
+
         // Withdraw
-        checking.withdraw(3000);
-        System.out.println("Withdrew 3000 from checking -> Balance: " + checking.getBalance());
+                double withdrawAmount = promptDouble(scanner, "Enter withdrawal amount from checking", 3000.0);
+                checking.withdraw(withdrawAmount);
+                System.out.println("Withdrew " + String.format("%.2f", withdrawAmount) + " from checking -> Balance: " + String.format("%.2f", checking.getBalance()));
+
         // Transfer
-        boolean transferred = savings.transfer(checking, 2000);
-        System.out.println("Transferred 2000 savings->checking: " + (transferred ? "SUCCESS" : "FAILED"));
-        System.out.println("  Savings balance:  " + savings.getBalance());
-        System.out.println("  Checking balance: " + checking.getBalance());
+                double transferAmount = promptDouble(scanner, "Enter transfer amount from savings to checking", 2000.0);
+                boolean transferred = savings.transfer(checking, transferAmount);
+                System.out.println("Transferred " + String.format("%.2f", transferAmount) + " savings->checking: " + (transferred ? "SUCCESS" : "FAILED"));
+                System.out.println("  Savings balance:  " + String.format("%.2f", savings.getBalance()));
+                System.out.println("  Checking balance: " + String.format("%.2f", checking.getBalance()));
+
         // Interest
         System.out.println("\nSavings interest rate: " + savings.getInterestRate() + "%");
         System.out.println("Monthly interest:     " + String.format("%.2f", savings.calculateInterest()));
         savings.applyInterest();
         System.out.println("Balance after interest: " + String.format("%.2f", savings.getBalance()));
+
         // --- 3. Loan Processing ---
         System.out.println("\n--- 3. Loan Processing ---\n");
         LoanService loanService = new LoanService();
+                double loanAmount = promptDouble(scanner, "Enter loan amount", 500000.0);
+                int loanTermMonths = promptInt(scanner, "Enter loan term (months)", 24);
+                String loanPurpose = prompt(scanner, "Enter loan purpose", "Home renovation");
+                double loanInterest = promptDouble(scanner, "Enter loan annual interest rate (%)", 12.0);
+
         LoanApplication application = loanService.applyForLoan(
-                customer, 500000, 24, "Home renovation"
+                                customer, loanAmount, loanTermMonths, loanPurpose
         );
         System.out.println("Application status: " + application.getStatus());
-        Loan loan = loanService.approveLoan(application, 12.0);
+                Loan loan = loanService.approveLoan(application, loanInterest);
         System.out.println("Application status: " + application.getStatus());
         System.out.println("Monthly payment:    " + String.format("%.2f", loan.getMonthlyPayment()));
         System.out.println("Loan status:        " + loan.getStatus());
         System.out.println("Next due date:      " + loan.getNextDueDate());
+
         // Make a payment
-        boolean paid = loan.makePayment(loan.getMonthlyPayment());
+                double loanPayment = promptDouble(scanner, "Enter loan payment amount", loan.getMonthlyPayment());
+                boolean paid = loan.makePayment(loanPayment);
         System.out.println("\nPayment made: " + (paid ? "SUCCESS" : "FAILED"));
         System.out.println("Remaining balance: " + String.format("%.2f", loan.getRemainingBalance()));
+
         // --- 4. Bill Payment ---
         System.out.println("\n--- 4. Bill Payment ---\n");
         TransactionService txService = new TransactionService();
         BillPaymentService billService = new BillPaymentService(txService);
-        Bill electricBill = new Bill("BILL-001", "ELECTRICITY", "CEB",
-                "ELC-9876", 3500.0, LocalDate.now().plusDays(5));
-        Bill waterBill = new Bill("BILL-002", "WATER", "NWSDB",
-                "WTR-5432", 1200.0, LocalDate.now().plusDays(3));
+
+                double electricAmount = promptDouble(scanner, "Enter electricity bill amount", 3500.0);
+                int electricDueDays = promptInt(scanner, "Enter electricity bill due in days", 5);
+                double waterAmount = promptDouble(scanner, "Enter water bill amount", 1200.0);
+                int waterDueDays = promptInt(scanner, "Enter water bill due in days", 3);
+
+                Bill electricBill = new Bill("BILL-001", "ELECTRICITY", "CEB",
+                                "ELC-9876", electricAmount, LocalDate.now().plusDays(electricDueDays));
+                Bill waterBill = new Bill("BILL-002", "WATER", "NWSDB",
+                                "WTR-5432", waterAmount, LocalDate.now().plusDays(waterDueDays));
         billService.scheduleBillPayment(electricBill);
         billService.scheduleBillPayment(waterBill);
         System.out.println("Upcoming bills: " + billService.getUpcomingBills().size());
         boolean billPaid = billService.payBill(checking, electricBill);
         System.out.println("Electric bill paid: " + (billPaid ? "YES" : "NO"));
-        System.out.println("Checking balance after bill: " + checking.getBalance());
+                System.out.println("Checking balance after bill: " + String.format("%.2f", checking.getBalance()));
+
         // --- 5. Notifications ---
         System.out.println("\n--- 5. Notifications ---\n");
         NotificationService notifService = new NotificationService();
-        notifService.sendTransactionNotification(customer, "DEPOSIT", 5000, true);
+                notifService.sendTransactionNotification(customer, "DEPOSIT", depositAmount, true);
         notifService.sendLoanInstallmentReminder(customer, loan);
-        notifService.sendLowBalanceAlert(customer, savings, 20000);
+                double lowBalanceThreshold = promptDouble(scanner, "Enter low-balance alert threshold", 20000.0);
+                notifService.sendLowBalanceAlert(customer, savings, lowBalanceThreshold);
         System.out.println("\nAll notifications for " + customer.getName() + ":");
         for (String n : customer.getNotifications()) {
             System.out.println("  -> " + n);
         }
+
         // --- 6. Monthly Statement ---
         System.out.println("\n--- 6. Monthly Statement ---\n");
         System.out.println(savings.generateMonthlyStatement());
+
         // --- Logout ---
         authService.logout();
         System.out.println("========================================");
         System.out.println("   Demo complete. Thank you!");
         System.out.println("========================================");
+
+                System.out.print("Press Enter to exit...");
+                scanner.nextLine();
+                scanner.close();
+        }
+
+        private static String prompt(Scanner scanner, String message, String defaultValue) {
+                System.out.print(message + " [" + defaultValue + "]: ");
+                String input = scanner.nextLine().trim();
+                return input.isEmpty() ? defaultValue : input;
+        }
+
+        private static double promptDouble(Scanner scanner, String message, double defaultValue) {
+                while (true) {
+                        String input = prompt(scanner, message, String.valueOf(defaultValue));
+                        try {
+                                return Double.parseDouble(input);
+                        } catch (NumberFormatException e) {
+                                System.out.println("Please enter a valid decimal number.");
+                        }
+                }
+        }
+
+        private static int promptInt(Scanner scanner, String message, int defaultValue) {
+                while (true) {
+                        String input = prompt(scanner, message, String.valueOf(defaultValue));
+                        try {
+                                return Integer.parseInt(input);
+                        } catch (NumberFormatException e) {
+                                System.out.println("Please enter a valid whole number.");
+                        }
+                }
     }
 }
