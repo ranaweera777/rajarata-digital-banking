@@ -14,130 +14,187 @@ import com.rajarata.bank.services.NotificationService;
 import com.rajarata.bank.services.TransactionService;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("========================================");
         System.out.println("   Rajarata Digital Banking System");
         System.out.println("========================================\n");
 
-        // --- 1. User Registration & Authentication ---
-        System.out.println("--- 1. User Registration & Login ---\n");
+        // ─── 1. Customer Registration ───
+        System.out.println("--- 1. Customer Registration ---\n");
+
+        System.out.print("Enter User ID: ");
+        String userId = scanner.nextLine();
+        System.out.print("Enter Username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter Password: ");
+        String password = scanner.nextLine();
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter Phone: ");
+        String phone = scanner.nextLine();
+        System.out.print("Enter Customer ID: ");
+        String customerId = scanner.nextLine();
+        System.out.print("Enter Address: ");
+        String address = scanner.nextLine();
+
+        Customer customer = new Customer(userId, username, password, email, phone, customerId, address);
 
         AuthenticationService authService = new AuthenticationService();
-
-        Customer customer = new Customer(
-                "U001", "kamal", "Kamal@2024!", "kamal@example.com",
-                "0771234567", "C001", "123 Colombo Road, Anuradhapura"
-        );
-
-        boolean registered = authService.register(customer, "Kamal@2024!");
+        boolean registered = authService.register(customer, password);
         System.out.println("Registration result: " + (registered ? "SUCCESS" : "FAILED"));
 
+        // ─── 2. Login ───
+        System.out.println("\n--- 2. Login ---\n");
+
+        System.out.print("Enter Username to login: ");
+        String loginUser = scanner.nextLine();
+        System.out.print("Enter Password to login: ");
+        String loginPass = scanner.nextLine();
+
         try {
-            authService.login("kamal", "Kamal@2024!");
-            System.out.println("Current user: " + authService.getCurrentUser().getName());
+            authService.login(loginUser, loginPass);
+            System.out.println("Logged-in user : " + authService.getCurrentUser().getName());
+            System.out.println("Customer name  : " + customer.getName());
+            System.out.println("Customer ID    : " + customer.getCustomerId());
         } catch (AuthenticationException e) {
             System.out.println("Login failed: " + e.getMessage());
         }
 
-        // --- 2. Account Operations ---
-        System.out.println("\n--- 2. Account Operations ---\n");
+        // ─── 3. Link Accounts ───
+        System.out.println("\n--- 3. Link Accounts to Customer ---\n");
 
         SavingsAccount savings = new SavingsAccount("A001", "SAV-1001", 10000.0, "LKR");
         CheckingAccount checking = new CheckingAccount("A002", "CHK-2001", 25000.0, "LKR", 5000.0);
-
         customer.addAccount(savings);
         customer.addAccount(checking);
 
-        System.out.println("Savings Account: " + savings.getAccountNumber()
-                + " | Balance: " + savings.getBalance() + " " + savings.getCurrency());
-        System.out.println("Checking Account: " + checking.getAccountNumber()
-                + " | Balance: " + checking.getBalance() + " " + checking.getCurrency());
+        System.out.printf("Savings  -> Account: %s | Balance: %.2f %s%n",
+                savings.getAccountNumber(), savings.getBalance(), savings.getCurrency());
+        System.out.printf("Checking -> Account: %s | Balance: %.2f %s%n",
+                checking.getAccountNumber(), checking.getBalance(), checking.getCurrency());
 
-        // Deposit
-        savings.deposit(5000);
-        System.out.println("\nDeposited 5000 to savings  -> Balance: " + savings.getBalance());
+        // ─── 4. Deposit / Withdraw / Transfer ───
+        System.out.println("\n--- 4. Account Operations ---\n");
 
-        // Withdraw
-        checking.withdraw(3000);
-        System.out.println("Withdrew 3000 from checking -> Balance: " + checking.getBalance());
+        System.out.print("Enter amount to deposit into Savings: ");
+        double depositAmt = Double.parseDouble(scanner.nextLine());
+        savings.deposit(depositAmt);
+        System.out.printf("Deposited %.2f to savings  -> Balance: %.2f%n", depositAmt, savings.getBalance());
 
-        // Transfer
-        boolean transferred = savings.transfer(checking, 2000);
-        System.out.println("Transferred 2000 savings->checking: " + (transferred ? "SUCCESS" : "FAILED"));
-        System.out.println("  Savings balance:  " + savings.getBalance());
-        System.out.println("  Checking balance: " + checking.getBalance());
+        System.out.print("Enter amount to withdraw from Checking: ");
+        double withdrawAmt = Double.parseDouble(scanner.nextLine());
+        checking.withdraw(withdrawAmt);
+        System.out.printf("Withdrew %.2f from checking -> Balance: %.2f%n", withdrawAmt, checking.getBalance());
 
-        // Interest
-        System.out.println("\nSavings interest rate: " + savings.getInterestRate() + "%");
-        System.out.println("Monthly interest:     " + String.format("%.2f", savings.calculateInterest()));
+        System.out.print("Enter amount to transfer from Savings to Checking: ");
+        double transferAmt = Double.parseDouble(scanner.nextLine());
+        boolean transferred = savings.transfer(checking, transferAmt);
+        System.out.println("Transfer " + (transferred ? "SUCCESS" : "FAILED"));
+        System.out.printf("  Savings balance:  %.2f%n", savings.getBalance());
+        System.out.printf("  Checking balance: %.2f%n", checking.getBalance());
+
+        // ─── 5. Interest & Monthly Statement ───
+        System.out.println("\n--- 5. Interest & Monthly Statement ---\n");
+
+        System.out.printf("Savings interest rate: %.2f%%%n", savings.getInterestRate());
+        double monthlyInterest = savings.calculateInterest();
+        System.out.printf("Monthly interest:      %.2f%n", monthlyInterest);
         savings.applyInterest();
-        System.out.println("Balance after interest: " + String.format("%.2f", savings.getBalance()));
+        System.out.printf("Balance after interest: %.2f%n", savings.getBalance());
+        System.out.println();
+        System.out.println(savings.generateMonthlyStatement());
 
-        // --- 3. Loan Processing ---
-        System.out.println("\n--- 3. Loan Processing ---\n");
+        // ─── 6. Loan Processing ───
+        System.out.println("--- 6. Loan Processing ---\n");
 
         LoanService loanService = new LoanService();
 
-        LoanApplication application = loanService.applyForLoan(
-                customer, 500000, 24, "Home renovation"
-        );
+        System.out.print("Enter loan amount: ");
+        double loanAmount = Double.parseDouble(scanner.nextLine());
+        System.out.print("Enter loan term (months): ");
+        int loanTerm = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter loan purpose: ");
+        String loanPurpose = scanner.nextLine();
+
+        LoanApplication application = loanService.applyForLoan(customer, loanAmount, loanTerm, loanPurpose);
         System.out.println("Application status: " + application.getStatus());
 
-        Loan loan = loanService.approveLoan(application, 12.0);
-        System.out.println("Application status: " + application.getStatus());
-        System.out.println("Monthly payment:    " + String.format("%.2f", loan.getMonthlyPayment()));
-        System.out.println("Loan status:        " + loan.getStatus());
-        System.out.println("Next due date:      " + loan.getNextDueDate());
+        System.out.print("Enter interest rate to approve loan (%): ");
+        double interestRate = Double.parseDouble(scanner.nextLine());
+        Loan loan = loanService.approveLoan(application, interestRate);
 
-        // Make a payment
-        boolean paid = loan.makePayment(loan.getMonthlyPayment());
-        System.out.println("\nPayment made: " + (paid ? "SUCCESS" : "FAILED"));
-        System.out.println("Remaining balance: " + String.format("%.2f", loan.getRemainingBalance()));
+        System.out.println("Application status : " + application.getStatus());
+        System.out.printf("Monthly installment: %.2f%n", loan.getMonthlyPayment());
+        System.out.println("Loan status        : " + loan.getStatus());
+        System.out.println("Next due date      : " + loan.getNextDueDate());
 
-        // --- 4. Bill Payment ---
-        System.out.println("\n--- 4. Bill Payment ---\n");
+        System.out.print("\nEnter payment amount for loan: ");
+        double paymentAmt = Double.parseDouble(scanner.nextLine());
+        boolean paid = loan.makePayment(paymentAmt);
+        System.out.println("Payment made: " + (paid ? "SUCCESS" : "FAILED"));
+        System.out.printf("Remaining balance: %.2f%n", loan.getRemainingBalance());
+
+        // ─── 7. Bill Payment ───
+        System.out.println("\n--- 7. Bill Payment ---\n");
 
         TransactionService txService = new TransactionService();
         BillPaymentService billService = new BillPaymentService(txService);
 
+        System.out.print("Enter due days for electricity bill: ");
+        int electricDueDays = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter due days for water bill: ");
+        int waterDueDays = Integer.parseInt(scanner.nextLine());
+
         Bill electricBill = new Bill("BILL-001", "ELECTRICITY", "CEB",
-                "ELC-9876", 3500.0, LocalDate.now().plusDays(5));
+                "ELC-9876", 3500.0, LocalDate.now().plusDays(electricDueDays));
         Bill waterBill = new Bill("BILL-002", "WATER", "NWSDB",
-                "WTR-5432", 1200.0, LocalDate.now().plusDays(3));
+                "WTR-5432", 1200.0, LocalDate.now().plusDays(waterDueDays));
 
         billService.scheduleBillPayment(electricBill);
         billService.scheduleBillPayment(waterBill);
 
-        System.out.println("Upcoming bills: " + billService.getUpcomingBills().size());
+        System.out.printf("Electricity bill due date: %s%n", electricBill.getDueDate());
+        System.out.printf("Water bill due date:       %s%n", waterBill.getDueDate());
+
+        List<Bill> upcoming = billService.getUpcomingBills();
+        System.out.println("\nUpcoming unpaid bills: " + upcoming.size());
+        for (Bill b : upcoming) {
+            System.out.printf("  %s — %s — %.2f — Due: %s%n",
+                    b.getBillId(), b.getBillType(), b.getAmount(), b.getDueDate());
+        }
 
         boolean billPaid = billService.payBill(checking, electricBill);
-        System.out.println("Electric bill paid: " + (billPaid ? "YES" : "NO"));
-        System.out.println("Checking balance after bill: " + checking.getBalance());
+        System.out.println("\nElectricity bill paid: " + (billPaid ? "YES" : "NO"));
+        System.out.printf("Checking balance after bill: %.2f%n", checking.getBalance());
 
-        // --- 5. Notifications ---
-        System.out.println("\n--- 5. Notifications ---\n");
+        // ─── 8. Notifications ───
+        System.out.println("\n--- 8. Notifications ---\n");
 
         NotificationService notifService = new NotificationService();
-        notifService.sendTransactionNotification(customer, "DEPOSIT", 5000, true);
+        notifService.sendTransactionNotification(customer, "DEPOSIT", depositAmt, true);
         notifService.sendLoanInstallmentReminder(customer, loan);
-        notifService.sendLowBalanceAlert(customer, savings, 20000);
+        notifService.sendLowBalanceAlert(customer, savings, 50000);
+        notifService.sendBillPaymentReminder(customer, billService.getUpcomingBills());
 
         System.out.println("\nAll notifications for " + customer.getName() + ":");
         for (String n : customer.getNotifications()) {
             System.out.println("  -> " + n);
         }
 
-        // --- 6. Monthly Statement ---
-        System.out.println("\n--- 6. Monthly Statement ---\n");
-        System.out.println(savings.generateMonthlyStatement());
-
-        // --- Logout ---
+        // ─── 9. Logout ───
+        System.out.println("\n--- 9. Logout ---\n");
         authService.logout();
 
-        System.out.println("========================================");
+        System.out.println("\n========================================");
         System.out.println("   Demo complete. Thank you!");
         System.out.println("========================================");
+
+        scanner.close();
     }
 }
