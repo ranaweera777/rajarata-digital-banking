@@ -1,4 +1,4 @@
-// package com.rajarata.bank.models.accounts;
+﻿// package com.rajarata.bank.models.accounts;
 
 // public class SavingsAccount extends Account {
 //     public SavingsAccount(String accountNumber, double initialBalance) {
@@ -15,6 +15,11 @@ public class SavingsAccount extends Account {
 
     public SavingsAccount(String accountId, String accountNumber, double initialDeposit, String currency) {
         super(accountId, accountNumber, initialDeposit, currency);
+        if (initialDeposit < MINIMUM_BALANCE) {
+            throw new IllegalArgumentException(
+                "Initial deposit must be at least " + MINIMUM_BALANCE + " for a savings account"
+            );
+        }
         this.minimumBalance = MINIMUM_BALANCE;
         this.withdrawalLimit = WITHDRAWAL_LIMIT;
     }

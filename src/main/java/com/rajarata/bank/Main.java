@@ -17,13 +17,28 @@ import com.rajarata.bank.services.NotificationService;
 import com.rajarata.bank.services.TransactionService;
 
 public class Main {
+        private static final double SAVINGS_MINIMUM_BALANCE = 500.0;
+        private static final double SAVINGS_WITHDRAWAL_LIMIT = 50000.0;
+
     public static void main(String[] args) {
                 Scanner scanner = new Scanner(System.in);
 
         System.out.println("Rajarata Digital Banking started.");
-        System.out.println("========================================");
-        System.out.println("   Rajarata Digital Banking System");
-        System.out.println("========================================\n");
+        System.out.println("======================================================================================================================================");
+        System.out.println("   ██████╗  █████╗      ██╗ █████╗ ██████╗  █████╗ ████████╗ █████╗     ██████╗ ██╗ ██████╗ ██╗████████╗ █████╗ ██╗     \r\n" + 
+                                "██╔══██╗██╔══██╗     ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██║██╔════╝ ██║╚══██╔══╝██╔══██╗██║     \r\n" + 
+                                "██████╔╝███████║     ██║███████║██████╔╝███████║   ██║   ███████║    ██║  ██║██║██║  ███╗██║   ██║   ███████║██║     \r\n" + 
+                                "██╔══██╗██╔══██║██   ██║██╔══██║██╔══██╗██╔══██║   ██║   ██╔══██║    ██║  ██║██║██║   ██║██║   ██║   ██╔══██║██║     \r\n" + 
+                                "██║  ██║██║  ██║╚█████╔╝██║  ██║██║  ██║██║  ██║   ██║   ██║  ██║    ██████╔╝██║╚██████╔╝██║   ██║   ██║  ██║███████╗\r\n" + 
+                                "╚═╝  ╚═╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═════╝ ╚═╝ ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝\r\n" + 
+                                "                                                                                                                     \r\n" + 
+                                "██████╗  █████╗ ███╗   ██╗██╗  ██╗██╗███╗   ██╗ ██████╗     ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗    \r\n" + 
+                                "██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝██║████╗  ██║██╔════╝     ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║    \r\n" + 
+                                "██████╔╝███████║██╔██╗ ██║█████╔╝ ██║██╔██╗ ██║██║  ███╗    ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║    \r\n" + 
+                                "██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ██║██║╚██╗██║██║   ██║    ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║    \r\n" + 
+                                "██████╔╝██║  ██║██║ ╚████║██║  ██╗██║██║ ╚████║╚██████╔╝    ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║    \r\n" + 
+                                "╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝        ");
+        System.out.println("=======================================================================================================================================\n");
 
         // --- 1. User Registration & Authentication ---
         System.out.println("--- 1. User Registration & Login ---\n");
@@ -57,7 +72,7 @@ public class Main {
         System.out.println("\n--- 2. Account Operations ---\n");
                 String savingsId = prompt(scanner, "Enter savings account ID", "A001");
                 String savingsNumber = prompt(scanner, "Enter savings account number", "SAV-1001");
-                double savingsBalance = promptDouble(scanner, "Enter initial savings balance", 10000.0);
+                double savingsBalance = promptSavingsInitialBalance(scanner, 10000.0);
 
                 String checkingId = prompt(scanner, "Enter checking account ID", "A002");
                 String checkingNumber = prompt(scanner, "Enter checking account number", "CHK-2001");
@@ -84,7 +99,7 @@ public class Main {
                 System.out.println("Withdrew " + String.format("%.2f", withdrawAmount) + " from checking -> Balance: " + String.format("%.2f", checking.getBalance()));
 
         // Transfer
-                double transferAmount = promptDouble(scanner, "Enter transfer amount from savings to checking", 2000.0);
+                double transferAmount = promptSavingsTransferAmount(scanner, savings, 2000.0);
                 boolean transferred = savings.transfer(checking, transferAmount);
                 System.out.println("Transferred " + String.format("%.2f", transferAmount) + " savings->checking: " + (transferred ? "SUCCESS" : "FAILED"));
                 System.out.println("  Savings balance:  " + String.format("%.2f", savings.getBalance()));
@@ -160,11 +175,30 @@ public class Main {
         // --- Logout ---
         authService.logout();
         System.out.println("========================================");
-        System.out.println("   Demo complete. Thank you!");
+        System.out.println("  ████████╗██╗  ██╗ █████╗ ███╗   ██╗██╗  ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗██╗\r\n" + //
+                                "╚══██╔══╝██║  ██║██╔══██╗████╗  ██║██║ ██╔╝    ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║██║\r\n" + //
+                                "   ██║   ███████║███████║██╔██╗ ██║█████╔╝      ╚████╔╝ ██║   ██║██║   ██║    ██║██║\r\n" + //
+                                "   ██║   ██╔══██║██╔══██║██║╚██╗██║██╔═██╗       ╚██╔╝  ██║   ██║██║   ██║    ╚═╝╚═╝\r\n" + //
+                                "   ██║   ██║  ██║██║  ██║██║ ╚████║██║  ██╗       ██║   ╚██████╔╝╚██████╔╝    ██╗██╗\r\n" + //
+                                "   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝       ╚═╝    ╚═════╝  ╚═════╝     ╚═╝╚═╝");
         System.out.println("========================================");
 
-                System.out.print("Press Enter to exit...");
-                scanner.nextLine();
+                int feedback;
+                while (true) {
+                        System.out.print("Please rate this app from 1 to 10 to exit: ");
+                        String input = scanner.nextLine().trim();
+                        try {
+                                feedback = Integer.parseInt(input);
+                                if (feedback >= 1 && feedback <= 10) {
+                                        break;
+                                }
+                                System.out.println("Feedback must be between 1 and 10.");
+                        } catch (NumberFormatException e) {
+                                System.out.println("Please enter a valid whole number between 1 and 10.");
+                        }
+                }
+
+                System.out.println("Thanks for your feedback: " + feedback + "/10");
                 scanner.close();
         }
 
@@ -182,6 +216,34 @@ public class Main {
                         } catch (NumberFormatException e) {
                                 System.out.println("Please enter a valid decimal number.");
                         }
+                }
+        }
+
+        private static double promptSavingsInitialBalance(Scanner scanner, double defaultValue) {
+                while (true) {
+                        double amount = promptDouble(scanner, "Enter initial savings balance", defaultValue);
+                        if (amount < SAVINGS_MINIMUM_BALANCE) {
+                                System.out.println("Savings initial balance must be at least " + SAVINGS_MINIMUM_BALANCE + ".");
+                                continue;
+                        }
+                        return amount;
+                }
+        }
+
+        private static double promptSavingsTransferAmount(Scanner scanner, SavingsAccount savings, double defaultValue) {
+                while (true) {
+                        double amount = promptDouble(scanner, "Enter transfer amount from savings to checking", defaultValue);
+                        if (amount > SAVINGS_WITHDRAWAL_LIMIT) {
+                                System.out.println("Savings transfer cannot exceed " + SAVINGS_WITHDRAWAL_LIMIT + " per transaction.");
+                                continue;
+                        }
+
+                        double remainingBalance = savings.getBalance() - amount;
+                        if (remainingBalance < SAVINGS_MINIMUM_BALANCE) {
+                                System.out.println("Transfer would violate minimum savings balance of " + SAVINGS_MINIMUM_BALANCE + ".");
+                                continue;
+                        }
+                        return amount;
                 }
         }
 

@@ -9,9 +9,29 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <app.dist.directory>${project.basedir}/dist</app.dist.directory>
     </properties>
       <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.build.directory}</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>rajarata-digital-banking.exe</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -37,7 +57,7 @@
                         </goals>
                         <configuration>
                             <headerType>console</headerType>
-                            <outfile>${project.build.directory}/rajarata-digital-banking.exe</outfile>
+                            <outfile>${app.dist.directory}/rajarata-digital-banking.exe</outfile>
                             <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
                             <errTitle>Rajarata Digital Banking</errTitle>
                             <jre>
