@@ -39,7 +39,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.rajarata.bank.Main</mainClass>
+                            <mainClass>com.rajarata.bank.GUIMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -56,7 +56,7 @@
                             <goal>launch4j</goal>
                         </goals>
                         <configuration>
-                            <headerType>console</headerType>
+                            <headerType>gui</headerType>
                             <outfile>${app.dist.directory}/rajarata-digital-banking.exe</outfile>
                             <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
                             <errTitle>Rajarata Digital Banking</errTitle>
