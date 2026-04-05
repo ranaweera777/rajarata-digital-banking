@@ -290,9 +290,6 @@ public class AccountPanel extends JPanel {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
         btn.setMaximumSize(new Dimension(180, 32));
-        JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
-        wrapper.setBackground(Color.WHITE);
-        wrapper.add(btn);
         return btn;
     }
 

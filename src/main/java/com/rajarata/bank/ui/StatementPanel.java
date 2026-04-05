@@ -22,14 +22,18 @@ public class StatementPanel extends JPanel {
     }
 
     private void buildUI() {
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.setBackground(new Color(245, 248, 255));
+
         JLabel title = new JLabel("Monthly Statement");
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         title.setForeground(new Color(0, 70, 127));
-        add(title, BorderLayout.NORTH);
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        northPanel.add(title, BorderLayout.NORTH);
 
         JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         controlPanel.setBackground(new Color(245, 248, 255));
-        controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         JLabel selectLabel = new JLabel("Select Account:");
         selectLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -60,7 +64,8 @@ public class StatementPanel extends JPanel {
         generateBtn.addActionListener(e -> generateStatement());
         controlPanel.add(generateBtn);
 
-        add(controlPanel, BorderLayout.NORTH);
+        northPanel.add(controlPanel, BorderLayout.CENTER);
+        add(northPanel, BorderLayout.NORTH);
 
         statementArea = new JTextArea();
         statementArea.setEditable(false);
